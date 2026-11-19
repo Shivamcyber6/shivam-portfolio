@@ -163,6 +163,21 @@ export const projects: Project[] = [
     tags: ["JavaScript", "Chrome Extension APIs"],
     code: "https://github.com/Shivamcyber6",
   },
+  {
+    id: "proj-tempo",
+    name: "Tempo Music Player",
+    year: "2026",
+    summary:
+      "A private music player that runs entirely in the browser: drop in your own MP3s, build playlists and play them with keyboard shortcuts. Files are stored in IndexedDB and tags and cover art are read client-side, so it ships as a static site with no backend.",
+    metrics: [
+      { value: "0", label: "servers, fully client-side" },
+      { value: "Web Audio", label: "live frequency visualizer" },
+      { value: "Private", label: "your music never leaves the browser" },
+    ],
+    tags: ["Next.js", "TypeScript", "Web Audio API", "IndexedDB", "Tailwind CSS"],
+    code: "https://github.com/Shivamcyber6/mp3_njs",
+    live: "https://tempo-player.vercel.app/",
+  },
 ];
 
 export const publication = {
