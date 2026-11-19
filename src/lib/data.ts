@@ -162,6 +162,7 @@ export const projects: Project[] = [
     ],
     tags: ["JavaScript", "Chrome Extension APIs"],
     code: "https://github.com/Shivamcyber6",
+    live: "https://chromewebstore.google.com/detail/clearfeed/pjhhcihepfhbglmkokbbiakkdnbaoiep",
   },
   {
     id: "proj-tempo",
