@@ -109,20 +109,6 @@ export type Project = {
 // Add your repo and live links here once the projects are on GitHub.
 export const projects: Project[] = [
   {
-    id: "proj-docai",
-    name: "AI Document Intelligence Platform",
-    year: "2026",
-    summary:
-      "Upload PDFs or web pages and ask questions about them. Answers come back with the exact source passages, and agents handle questions that need several steps across documents.",
-    metrics: [
-      { value: "RAG", label: "answers with source citations" },
-      { value: "Streaming", label: "chat with RSC + AI SDK" },
-      { value: "Serverless", label: "AWS Lambda + Docker" },
-    ],
-    tags: ["Next.js", "FastAPI", "LangChain", "Pinecone", "AWS"],
-    code: "https://github.com/Shivamcyber6",
-  },
-  {
     id: "proj-portfolio",
     name: "This portfolio",
     year: "2026",
