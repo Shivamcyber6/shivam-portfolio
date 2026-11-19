@@ -19,7 +19,7 @@ export default function CommandPalette() {
       { label: "GitHub activity", hint: "section", run: () => go("github") },
       { label: "Terminal", hint: "section", run: () => go("terminal") },
       { label: "Research & recognition", hint: "section", run: () => go("research") },
-      { label: "Send a message", hint: "section", run: () => go("contact") },
+      { label: "Contact", hint: "section", run: () => go("contact") },
       { label: "Switch light / dark theme", hint: "action", run: toggleTheme },
       { label: "Copy email address", hint: "action", run: () => navigator.clipboard?.writeText(profile.email).catch(() => {}) },
       { label: "Open GitHub", hint: "link", run: () => window.open(profile.links.github, "_blank", "noopener") },

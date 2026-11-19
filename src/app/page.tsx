@@ -3,7 +3,6 @@ import { profile, stack, jobs, projects, publication, recognition, education } f
 import ThemeToggle from "@/components/ThemeToggle";
 import DotField from "@/components/DotField";
 import AskAI from "@/components/AskAI";
-import ContactForm from "@/components/ContactForm";
 import ViewCounter from "@/components/ViewCounter";
 import CopyEmail from "@/components/CopyEmail";
 import Terminal from "@/components/Terminal";
@@ -169,8 +168,8 @@ export default function Home() {
           </ul>
         </Section>
 
-        <Section id="contact" cmd="cat contact.json" title="Get in touch" lead="Hiring for a Full Stack or GenAI role? Send a message here or email me directly.">
-          <div className="panel card" style={{ marginBottom: 14 }}>
+        <Section id="contact" cmd="cat contact.json" title="Get in touch" lead="Hiring for a Full Stack or GenAI role? Email me or reach out on LinkedIn.">
+          <div className="panel card">
             <dl style={{ margin: 0 }}>
               <div className="r"><dt>status</dt><dd><span className="status live"><span className="dot" />Available · {profile.notice} notice</span></dd></div>
               <div className="r"><dt>currently</dt><dd>{profile.current}</dd></div>
@@ -179,7 +178,6 @@ export default function Home() {
               <div className="r"><dt>elsewhere</dt><dd><a href={profile.links.linkedin}>LinkedIn</a><a href={profile.links.github}>GitHub</a><a href={profile.links.leetcode}>LeetCode</a></dd></div>
             </dl>
           </div>
-          <ContactForm />
         </Section>
       </main>
 

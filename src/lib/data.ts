@@ -127,13 +127,13 @@ export const projects: Project[] = [
     name: "This portfolio",
     year: "2026",
     summary:
-      "A Next.js site with its own backend: a streaming AI assistant that answers from my resume with retrieval and citations, a contact form stored in MongoDB with email alerts, a visitor counter and live GitHub stats.",
+      "A Next.js site with its own backend: a streaming AI assistant that answers from my resume with retrieval and citations, a visitor counter and live GitHub stats.",
     metrics: [
       { value: "4", label: "API routes" },
       { value: "RAG", label: "grounded AI answers" },
       { value: "ISR", label: "GitHub stats cached hourly" },
     ],
-    tags: ["Next.js", "TypeScript", "MongoDB", "Gemini API", "Resend"],
+    tags: ["Next.js", "TypeScript", "MongoDB", "Gemini API"],
     code: "https://github.com/Shivamcyber6",
   },
   {
