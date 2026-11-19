@@ -75,6 +75,7 @@ export default function Home() {
           <div className="cta">
             <a className="btn" href="#ask">Ask my AI assistant</a>
             <a className="btn ghost" href="#contact">Get in touch</a>
+            <a className="btn ghost" href={profile.links.resume} download>Download resume</a>
             <span className="fig kbd-hint" style={{ alignSelf: "center", margin: 0 }}>or press <span className="kbd">Ctrl</span> <span className="kbd">K</span></span>
           </div>
         </header>
@@ -173,7 +174,7 @@ export default function Home() {
               <div className="r"><dt>currently</dt><dd>{profile.current}</dd></div>
               <div className="r"><dt>location</dt><dd>{profile.location} · open to {profile.openTo}</dd></div>
               <div className="r"><dt>email</dt><dd><span>{profile.email}</span><CopyEmail email={profile.email} /></dd></div>
-              <div className="r"><dt>elsewhere</dt><dd><a href={profile.links.linkedin}>LinkedIn</a><a href={profile.links.github}>GitHub</a><a href={profile.links.leetcode}>LeetCode</a></dd></div>
+              <div className="r"><dt>elsewhere</dt><dd><a href={profile.links.linkedin}>LinkedIn</a><a href={profile.links.github}>GitHub</a><a href={profile.links.leetcode}>LeetCode</a><a href={profile.links.resume} download>Resume (PDF)</a></dd></div>
             </dl>
           </div>
         </Section>
@@ -185,6 +186,7 @@ export default function Home() {
             <a href={profile.links.github}>GitHub</a>
             <a href={profile.links.linkedin}>LinkedIn</a>
             <a href="#contact">Email</a>
+            <a href={profile.links.resume} download>Resume</a>
           </div>
           <p style={{ margin: "6px 0 0" }}>© 2026 {profile.name} · Next.js, TypeScript and the Gemini API, deployed on Vercel.</p>
         </div>

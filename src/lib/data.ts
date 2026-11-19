@@ -14,6 +14,7 @@ export const profile = {
     github: "https://github.com/Shivamcyber6",
     linkedin: "https://www.linkedin.com/in/shivam-singh-663320197",
     leetcode: "https://leetcode.com/",
+    resume: "/Shivam_Singh_Resume.pdf",
   },
   intro: [
     "I build full stack web products in Next.js, React, Node.js and Python, from the database to the deploy.",
