@@ -23,7 +23,7 @@ const COMMANDS: Record<string, string[]> = {
   projects: ["1. This portfolio                      Next.js + Gemini", "2. AuraStream                          video platform", "3. ClearFeed                           Chrome extension", "4. Tempo Music Player                  browser MP3 player"],
   experience: ["2025–now   Web Developer, COER University", "2024–25    Frontend & AI Integration, Freelance", "2024       Software Engineer Trainee, KPIT"],
   research: ['"A study of NLP for the Global Energy Sector…"', "ICSSCS 2026 · peer-reviewed and presented"],
-  contact: ["email     19410121143.k.shivamsingh@gmail.com", "linkedin  linkedin.com/in/shivam-singh-663320197", "github    github.com/Shivamcyber6"],
+  contact: ["email     19410121143.k.shivamsingh@gmail.com", "linkedin  linkedin.com/in/shivam-singh-663320197", "github    github.com/Shivamcyber6", "resume    shivam-portfolio-two-red.vercel.app/Shivam_Singh_Resume.pdf"],
   ls: ["about  stack  experience  projects  research  contact"],
   sudo: ["nice try. permission denied."],
 };
