@@ -9,7 +9,7 @@ const STOP = new Set(
 
 const ALIASES: Record<string, string> = {
   nextjs: "next.js", next: "next.js", node: "node.js", nodejs: "node.js", js: "javascript", ts: "typescript",
-  postgres: "postgresql", mongo: "mongodb", gen: "genai", llm: "llm", wfh: "remote", salary: "salary",
+  postgres: "postgresql", mongo: "mongodb", gen: "genai", llm: "llm", wfh: "remote", remotely: "remote", relocation: "relocate", relocating: "relocate", salary: "salary",
 };
 
 export function tokenize(s: string): string[] {
