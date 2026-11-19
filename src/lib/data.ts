@@ -148,6 +148,7 @@ export const projects: Project[] = [
     ],
     tags: ["Next.js", "PostgreSQL", "Supabase", "NextAuth.js"],
     code: "https://github.com/Shivamcyber6",
+    live: "https://www.aurastream.cloud/",
   },
   {
     id: "proj-clearfeed",
