@@ -43,7 +43,6 @@ export default function CommandPalette() {
       { label: "Copy email address", hint: "action", run: () => navigator.clipboard?.writeText(profile.email).catch(() => {}) },
       { label: "Open GitHub", hint: "link", run: () => window.open(profile.links.github, "_blank", "noopener") },
       { label: "Open LinkedIn", hint: "link", run: () => window.open(profile.links.linkedin, "_blank", "noopener") },
-      { label: "Download resume (PDF)", hint: "link", run: () => window.open(profile.links.resume, "_blank", "noopener") },
     ],
     [],
   );
