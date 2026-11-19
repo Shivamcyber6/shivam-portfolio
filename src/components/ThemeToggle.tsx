@@ -1,15 +1,35 @@
 "use client";
 
+import { useEffect } from "react";
+
+// The choice lives in <meta name="color-scheme">: "light dark" follows the system, "light" or "dark"
+// pins it. CSS maps the meta to color-scheme, so light-dark() colors and native UI both follow it.
+const meta = () => document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]')!;
+const systemTheme = () => (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+const setScheme = (value: string | null) => { meta().content = value === "light" || value === "dark" ? value : "light dark"; };
+
+// Two states: follow the system, or the opposite of what's on screen. Toggling back to the system's
+// theme clears the saved choice, so the site follows the OS again instead of staying pinned.
 export function toggleTheme() {
-  const el = document.documentElement;
-  const next = el.getAttribute("data-theme") === "dark" ? "light" : "dark";
-  el.setAttribute("data-theme", next);
+  const current = meta().content;
+  const rendered = current === "light" || current === "dark" ? current : systemTheme();
+  const next = rendered === "dark" ? "light" : "dark";
+  const stored = next === systemTheme() ? null : next;
+  setScheme(stored);
   try {
-    localStorage.setItem("theme", next);
+    if (stored) localStorage.setItem("theme", stored);
+    else localStorage.removeItem("theme");
   } catch {}
 }
 
 export default function ThemeToggle() {
+  // Stay in sync when another tab changes the theme.
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => { if (e.key === "theme" || e.key === null) setScheme(e.newValue); };
+    addEventListener("storage", onStorage);
+    return () => removeEventListener("storage", onStorage);
+  }, []);
+
   return (
     <button type="button" className="icon-btn" onClick={toggleTheme} aria-label="Switch between light and dark theme" title="Light / dark">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">

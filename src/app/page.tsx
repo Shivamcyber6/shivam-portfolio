@@ -3,7 +3,6 @@ import { profile, stack, jobs, projects, publication, recognition, education } f
 import ThemeToggle from "@/components/ThemeToggle";
 import DotField from "@/components/DotField";
 import AskAI from "@/components/AskAI";
-import ViewCounter from "@/components/ViewCounter";
 import CopyEmail from "@/components/CopyEmail";
 import Terminal from "@/components/Terminal";
 import CommandPalette, { PaletteButton } from "@/components/CommandPalette";
@@ -65,7 +64,6 @@ export default function Home() {
             <DotField />
             <dl className="strip" style={{ margin: 0 }}>
               <div><dt>status</dt><dd className="status live"><span className="dot" />open to work</dd></div>
-              <ViewCounter />
               <div><dt>notice</dt><dd>{profile.notice}</dd></div>
             </dl>
           </div>
@@ -188,7 +186,7 @@ export default function Home() {
             <a href={profile.links.linkedin}>LinkedIn</a>
             <a href="#contact">Email</a>
           </div>
-          <p style={{ margin: "6px 0 0" }}>© 2026 {profile.name} · Next.js, TypeScript, MongoDB and the Gemini API, deployed on Vercel.</p>
+          <p style={{ margin: "6px 0 0" }}>© 2026 {profile.name} · Next.js, TypeScript and the Gemini API, deployed on Vercel.</p>
         </div>
       </footer>
     </>

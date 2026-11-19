@@ -20,7 +20,7 @@ const COMMANDS: Record<string, string[]> = {
   ],
   whoami: ["Shivam Singh: Full Stack Developer · GenAI", "Web Developer at COER University, Roorkee.", "~2 yr 10 mo experience. Open to work, 30 days' notice."],
   stack: ["languages  JavaScript, TypeScript, Python, SQL", "frontend   React, Next.js, Tailwind", "backend    Node.js, Express, FastAPI", "genai      LangChain, RAG, embeddings, agents, MCP", "data       PostgreSQL, MongoDB, Pinecone, ChromaDB", "cloud      AWS, Docker, Vercel"],
-  projects: ["1. AI Document Intelligence Platform   RAG + agents", "2. This portfolio                      Next.js + MongoDB + Gemini", "3. AuraStream                          video platform", "4. ClearFeed                           Chrome extension"],
+  projects: ["1. AI Document Intelligence Platform   RAG + agents", "2. This portfolio                      Next.js + Gemini", "3. AuraStream                          video platform", "4. ClearFeed                           Chrome extension"],
   experience: ["2025–now   Web Developer, COER University", "2024–25    Frontend & AI Integration, Freelance", "2024       Software Engineer Trainee, KPIT"],
   research: ['"A study of NLP for the Global Energy Sector…"', "ICSSCS 2026 · peer-reviewed and presented"],
   contact: ["email     19410121143.k.shivamsingh@gmail.com", "linkedin  linkedin.com/in/shivam-singh-663320197", "github    github.com/Shivamcyber6"],

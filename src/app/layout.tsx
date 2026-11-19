@@ -25,13 +25,15 @@ export const viewport: Viewport = {
   ],
 };
 
-// Runs before first paint: saved theme, else the system preference. Prevents a light/dark flash.
-const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`;
+// Runs before first paint, right after the color-scheme <meta>: applies a saved override (else the meta
+// stays "light dark" and CSS follows the system). Prevents a light/dark flash.
+const themeScript = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.querySelector('meta[name="color-scheme"]').content=t}catch(e){}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" data-theme="light" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <head>
+        <meta name="color-scheme" content="light dark" suppressHydrationWarning />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>{children}</body>

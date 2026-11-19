@@ -15,7 +15,13 @@ export default function DotField() {
     let W = 0, H = 0, raf = 0, mx = -999, my = -999;
     let pts: { x: number; y: number; ox: number; oy: number }[] = [];
     let pulses: { x: number; y: number; t: number }[] = [];
-    const css = () => getComputedStyle(document.documentElement);
+    // Resolve the theme colours through the canvas's own color property: light-dark() tokens only become
+    // real colours once applied to an element, so reading the raw custom property would not work.
+    let base = "#c9c9d1", accent = "#3451d1";
+    const readColors = () => {
+      cv.style.color = "var(--dot)"; base = getComputedStyle(cv).color || base;
+      cv.style.color = "var(--accent)"; accent = getComputedStyle(cv).color || accent;
+    };
 
     function size() {
       const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -28,9 +34,6 @@ export default function DotField() {
     }
 
     function draw() {
-      const s = css();
-      const base = s.getPropertyValue("--dot").trim() || "#c9c9d1";
-      const accent = s.getPropertyValue("--accent").trim() || "#3451d1";
       ctx.clearRect(0, 0, W, H);
       const now = performance.now();
       pulses = pulses.filter((p) => now - p.t < 900);
@@ -61,18 +64,24 @@ export default function DotField() {
     const onDown = (e: PointerEvent) => { const [x, y] = pos(e); pulses.push({ x, y, t: performance.now() }); };
     const onResize = () => { size(); if (reduce) draw(); };
     // Redraw when the theme changes so dot colours follow it.
-    const mo = new MutationObserver(() => reduce && draw());
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    const onTheme = () => { readColors(); if (reduce) draw(); };
+    const mo = new MutationObserver(onTheme);
+    const scheme = matchMedia("(prefers-color-scheme: dark)");
+    const meta = document.querySelector('meta[name="color-scheme"]');
+    if (meta) mo.observe(meta, { attributes: true, attributeFilter: ["content"] });
+    scheme.addEventListener("change", onTheme);
 
     field.addEventListener("pointermove", onMove);
     field.addEventListener("pointerleave", onLeave);
     field.addEventListener("pointerdown", onDown);
     addEventListener("resize", onResize);
+    readColors();
     size();
     draw();
     return () => {
       cancelAnimationFrame(raf);
       mo.disconnect();
+      scheme.removeEventListener("change", onTheme);
       field.removeEventListener("pointermove", onMove);
       field.removeEventListener("pointerleave", onLeave);
       field.removeEventListener("pointerdown", onDown);

@@ -1,43 +1,27 @@
 @import "tailwindcss";
 
-/* Theme tokens. data-theme on <html> is set before first paint by the script in layout.tsx. */
-:root,
-[data-theme="light"] {
-  --bg: #fcfcfc;
-  --paper: #ffffff;
-  --ink: #111113;
-  --ink-2: #3c3c43;
-  --muted: #6e6e77;
-  --rule: #e7e7ea;
-  --soft: #f2f2f4;
-  --accent: #3451d1;
-  --accent-soft: #eef1fd;
-  --accent-line: #d4dbf6;
-  --ok: #1f9d55;
-  --dot: #c9c9d1;
-  --term-bg: #121214;
-  --term-bar: #1c1c1f;
-  --flash: #fff4c7;
-  color-scheme: light;
-}
+/* Theme tokens: light-dark() follows color-scheme. The <meta name="color-scheme"> in layout.tsx holds
+   the user's choice ("light dark" = follow the system), and these rules map it back to the property. */
+:root {
+  color-scheme: light dark;
+  --bg: light-dark(#fcfcfc, #0b0b0d);
+  --paper: light-dark(#ffffff, #121215);
+  --ink: light-dark(#111113, #f2f2f4);
+  --ink-2: light-dark(#3c3c43, #c4c4cc);
+  --muted: light-dark(#6e6e77, #8b8b95);
+  --rule: light-dark(#e7e7ea, #24242a);
+  --soft: light-dark(#f2f2f4, #1b1b20);
+  --accent: light-dark(#3451d1, #8ea2ff);
+  --accent-soft: light-dark(#eef1fd, #171c33);
+  --accent-line: light-dark(#d4dbf6, #2b3561);
+  --ok: light-dark(#1f9d55, #3ccf7f);
+  --dot: light-dark(#c9c9d1, #4a4a54);
+  --term-bg: light-dark(#121214, #050506);
+  --term-bar: light-dark(#1c1c1f, #111114);
+  --flash: light-dark(#fff4c7, #2a2612);
 
-[data-theme="dark"] {
-  --bg: #0b0b0d;
-  --paper: #121215;
-  --ink: #f2f2f4;
-  --ink-2: #c4c4cc;
-  --muted: #8b8b95;
-  --rule: #24242a;
-  --soft: #1b1b20;
-  --accent: #8ea2ff;
-  --accent-soft: #171c33;
-  --accent-line: #2b3561;
-  --ok: #3ccf7f;
-  --dot: #4a4a54;
-  --term-bg: #050506;
-  --term-bar: #111114;
-  --flash: #2a2612;
-  color-scheme: dark;
+  &:has(> head > meta[name="color-scheme"][content="dark"]) { color-scheme: dark; }
+  &:has(> head > meta[name="color-scheme"][content="light"]) { color-scheme: light; }
 }
 
 @theme inline {
@@ -223,8 +207,10 @@ textarea.input { resize: vertical; min-height: 110px; }
 
 
 /* command palette */
-.palette-bg { position: fixed; inset: 0; z-index: 70; background: color-mix(in srgb, #000 35%, transparent); display: grid; place-items: start center; padding-top: 14vh; }
-.palette { width: min(560px, 92vw); background: var(--paper); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+.palette { width: min(560px, 92vw); margin: 14vh auto auto; padding: 0; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+/* stop the page behind the open menu from scrolling (native dialog, no overflow lock on body) */
+.palette:modal { overscroll-behavior: contain; }
+.palette::backdrop { background: color-mix(in srgb, #000 35%, transparent); overflow: hidden; overscroll-behavior: contain; }
 .palette input { width: 100%; border: 0; border-bottom: 1px solid var(--rule); padding: 14px 16px; font: 400 15px var(--font-geist-sans), sans-serif; background: transparent; color: var(--ink); outline: none; }
 .palette ul { list-style: none; margin: 0; padding: 6px; max-height: 320px; overflow: auto; }
 .palette li button { width: 100%; text-align: left; display: flex; justify-content: space-between; gap: 10px; padding: 9px 10px; border-radius: 8px; border: 0; background: transparent; color: var(--ink); font: 400 14.5px var(--font-geist-sans), sans-serif; cursor: pointer; }

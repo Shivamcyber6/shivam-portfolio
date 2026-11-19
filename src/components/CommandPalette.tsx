@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toggleTheme } from "./ThemeToggle";
 import { profile } from "@/lib/data";
 
@@ -8,8 +8,27 @@ type Item = { label: string; hint: string; run: () => void };
 
 const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
+// Light dismiss for browsers without <dialog closedby> (Safari): close only when the press and release
+// both land outside the dialog box, so a text-selection drag that ends on the backdrop doesn't close it.
+function addLightDismissFallback(dialog: HTMLDialogElement) {
+  if ("closedBy" in HTMLDialogElement.prototype) return () => {};
+  const outside = (e: PointerEvent) => {
+    const r = dialog.getBoundingClientRect();
+    return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+  };
+  let pressedOutside = false;
+  const down = (e: PointerEvent) => { pressedOutside = outside(e); };
+  const up = (e: PointerEvent) => { if (pressedOutside && outside(e)) dialog.close(); };
+  dialog.addEventListener("pointerdown", down);
+  dialog.addEventListener("pointerup", up);
+  return () => { dialog.removeEventListener("pointerdown", down); dialog.removeEventListener("pointerup", up); };
+}
+
 export default function CommandPalette() {
+  const ref = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const [sel, setSel] = useState(0);
 
   const items: Item[] = useMemo(
     () => [
@@ -27,55 +46,64 @@ export default function CommandPalette() {
     ],
     [],
   );
+
+  // Open with showModal(): the browser makes the page inert, traps focus, handles Esc and the back
+  // gesture, and returns focus to whatever opened the menu when it closes.
   useEffect(() => {
+    const dialog = ref.current!;
+    const show = () => { if (!dialog.open) { setQ(""); setSel(0); dialog.showModal(); setOpen(true); } };
     const onKey = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); setOpen((o) => !o); }
-      if (e.key === "Escape") setOpen(false);
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        if (dialog.open) dialog.close(); else show();
+      }
     };
-    const onOpen = () => setOpen(true);
+    const onClose = () => setOpen(false);
+    const removeFallback = addLightDismissFallback(dialog);
     addEventListener("keydown", onKey);
-    addEventListener("open-palette", onOpen);
-    return () => { removeEventListener("keydown", onKey); removeEventListener("open-palette", onOpen); };
+    addEventListener("open-palette", show);
+    dialog.addEventListener("close", onClose);
+    return () => {
+      removeFallback();
+      removeEventListener("keydown", onKey);
+      removeEventListener("open-palette", show);
+      dialog.removeEventListener("close", onClose);
+    };
   }, []);
 
-  if (!open) return null;
-  return <Dialog items={items} onClose={() => setOpen(false)} />;
-}
-
-function Dialog({ items, onClose }: { items: Item[]; onClose: () => void }) {
-  const [q, setQ] = useState("");
-  const [sel, setSel] = useState(0);
   const shown = items.filter((i) => i.label.toLowerCase().includes(q.toLowerCase()));
-  const choose = (i: Item | undefined) => { if (!i) return; onClose(); i.run(); };
+  const choose = (i: Item | undefined) => { if (!i) return; ref.current?.close(); i.run(); };
 
   return (
-    <div className="palette-bg" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="palette" role="dialog" aria-modal="true" aria-label="Command menu">
-        <input
-          autoFocus
-          value={q}
-          onChange={(e) => { setQ(e.target.value); setSel(0); }}
-          onKeyDown={(e) => {
-            if (e.key === "ArrowDown") { e.preventDefault(); setSel((s) => Math.min(s + 1, shown.length - 1)); }
-            if (e.key === "ArrowUp") { e.preventDefault(); setSel((s) => Math.max(s - 1, 0)); }
-            if (e.key === "Enter") choose(shown[sel]);
-          }}
-          placeholder="Jump to a section or run an action…"
-          aria-label="Search commands"
-        />
-        <ul role="listbox">
-          {shown.map((i, idx) => (
-            <li key={i.label}>
-              <button type="button" role="option" aria-selected={idx === sel} onMouseEnter={() => setSel(idx)} onClick={() => choose(i)}>
-                {i.label}
-                <span>{i.hint}</span>
-              </button>
-            </li>
-          ))}
-          {shown.length === 0 && <li style={{ padding: "10px", color: "var(--muted)" }}>Nothing matches.</li>}
-        </ul>
-      </div>
-    </div>
+    <dialog ref={ref} className="palette" aria-label="Command menu" {...({ closedby: "any" } as object)}>
+      {open && (
+        <>
+          <input
+            autoFocus
+            value={q}
+            onChange={(e) => { setQ(e.target.value); setSel(0); }}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowDown") { e.preventDefault(); setSel((s) => Math.min(s + 1, shown.length - 1)); }
+              if (e.key === "ArrowUp") { e.preventDefault(); setSel((s) => Math.max(s - 1, 0)); }
+              if (e.key === "Enter") choose(shown[sel]);
+            }}
+            placeholder="Jump to a section or run an action…"
+            aria-label="Search commands"
+          />
+          <ul role="listbox">
+            {shown.map((i, idx) => (
+              <li key={i.label}>
+                <button type="button" role="option" aria-selected={idx === sel} onMouseEnter={() => setSel(idx)} onClick={() => choose(i)}>
+                  {i.label}
+                  <span>{i.hint}</span>
+                </button>
+              </li>
+            ))}
+            {shown.length === 0 && <li style={{ padding: "10px", color: "var(--muted)" }}>Nothing matches.</li>}
+          </ul>
+        </>
+      )}
+    </dialog>
   );
 }
 
